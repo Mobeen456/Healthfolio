@@ -9,7 +9,7 @@ export default function Home() {
     <main className="bg-secondary flex min-h-screen flex-col items-center">
       <Header/>
       <WhatBeDo/>
-      <MyMap/>
+      {/* <MyMap/> */}
       <CommonTest/>
     </main>
   );
