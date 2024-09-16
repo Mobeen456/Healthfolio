@@ -2,10 +2,9 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { signOut, signIn } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { cn } from "@/components/resources/lib/utils";
-import Test from "../resources/section/Test";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -18,7 +17,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import Bars2 from "@/components/resources/icons/Bars2";
-import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { User } from "lucide-react";
 import {
@@ -92,21 +90,19 @@ function AuthLinks({ status, userName, image }: AuthLinksProps) {
                 <DropdownMenuLabel>Profile</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem className="uppercase">
-                 <Link href={"/profile"}>{userName}</Link> 
+                  <Link href={"/profile"}>{userName}</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <Link href={"/Settings"}>Settings</Link>
                 </DropdownMenuItem>
-
                 <DropdownMenuItem>
-                  
                   <Link href={"/"}>
-                  <button
-                    onClick={() => signOut()}
-                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-3 py-1.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                  >
-                    Logout
-                  </button>
+                    <button
+                      onClick={() => signOut()}
+                      className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-3 py-1.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    >
+                      Logout
+                    </button>
                   </Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -141,11 +137,11 @@ export function Navbar() {
   }
   return (
     <>
-      <div className="items-center md:hidden flex justify-between z-40 relative p-4">
+      <div className="items-center md:hidden flex justify-between z-40 bg-white text-black p-4 relative">
         <Link href={"/"} className="font-bold text-2xl ">
           <span>healthFolio</span>
         </Link>
-        <div className="flex gap-8 items-center">
+        <div className="absolute top-4 right-4">
           <button
             className="p-1 border"
             onClick={() => setMobileNavOpen((prev) => !prev)}
@@ -153,49 +149,49 @@ export function Navbar() {
             <Bars2 />
           </button>
         </div>
-        <div />
         {mobileNavOpen && (
           <div
             onClick={() => setMobileNavOpen(false)}
-            className="md:hidden p-4 bg-gray-200 rounded-lg mt-2 flex flex-col gap-2 text-center"
+            className="md:hidden p-8 bg-gray-200 rounded-lg mt-2 flex flex-col justify-center items-start gap-2 text-center relative top-8 right-2"
           >
             <Link href={"/"}>Home</Link>
             <Link href={"/menu"}>Dashboard</Link>
             <Link href={"/about"}>About</Link>
             <Link href={"/contact"}>Contact</Link>
-            <AuthLinks
-              status={status || ""}
-              userName={userName || ""}
-              image={userData?.image || ""}
-            />
+            <Link href={"/profile"}>Profile</Link>
+            <div>
+              {status === "authenticated" && (
+              <Button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={() => signOut()}>Logout</Button>
+            )}
+            {status === "unauthenticated" && (
+              <Link href={"/login"} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" >Login</Link>
+            )}
+            </div>
+            
+
           </div>
         )}
       </div>
 
-      <div className="hidden md:flex items-center justify-between">
-        <Link
-          href="/"
-          legacyBehavior
-          passHref
-          className="text-primary font-semibold text-2xl"
-        >
+      <div className="hidden md:flex items-center justify-between px-4 bg-white text-black sticky top-0 z-40">
+        <Link href="/" passHref className="text-primary font-semibold text-2xl">
           healthFOLIO
         </Link>
         <NavigationMenu className="flex items-center gap-8 text-gray-500 font-semibold py-2">
           <NavigationMenuList>
             <NavigationMenuItem>
-              <Link href="/dashboard" legacyBehavior passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              
+                <NavigationMenuLink href="/menu" className={navigationMenuTriggerStyle()}>
                   Dashboard
                 </NavigationMenuLink>
-              </Link>
+              
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <Link href="/tests" legacyBehavior passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+            
+                <NavigationMenuLink href="/tests" className={navigationMenuTriggerStyle()}>
                   Tests
                 </NavigationMenuLink>
-              </Link>
+              
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuTrigger>Components</NavigationMenuTrigger>
@@ -214,11 +210,11 @@ export function Navbar() {
               </NavigationMenuContent>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <Link href="/docs" legacyBehavior passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              
+                <NavigationMenuLink href="/docs" className={navigationMenuTriggerStyle()}>
                   Documentation
                 </NavigationMenuLink>
-              </Link>
+              
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>

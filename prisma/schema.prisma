@@ -24,6 +24,8 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  Cart Cart[]
 }
 
 model Account {
@@ -95,15 +97,19 @@ model Test {
   name        String
   description String
   price       Float
+  image       String?
 
-  Cart Cart[]
+  carts Cart[]
 }
 
 model Cart {
   id        String     @id @default(auto()) @map("_id") @db.ObjectId
-  userId    String
+  userId    String   @db.ObjectId
   testId    String  @db.ObjectId
   test      Test    @relation(fields: [testId], references: [id])
   quantity  Int     @default(1)
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
 }
